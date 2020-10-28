@@ -4,6 +4,8 @@ int main(void)
 {
 	int i = 0;
 	int j = 0;
+	double cur = 1024, pre = 0;	// 초기값은 충분히 큰 값.
+
 	memset(&inputBuffer, 0, sizeof(inputData));
 
 	enterInput(&inputBuffer);
@@ -16,9 +18,17 @@ int main(void)
 			EBPCalc(&inputBuffer, j);
 			inputBuffer.errorSum[i] = inputBuffer.errorSum[i] + (pow(inputBuffer.error[j], 2.0) * 0.5);
 		}
-		printf("%d %lf\n", i, inputBuffer.errorSum[i]);	// 전체 에러합?
+		
+		pre = cur;
+		cur = inputBuffer.errorSum[i];
+	
+		if (cur > pre)	// 그래프가 내려가다가 올라가면...
+			break;
+		//printf("%d %lf\n", i, inputBuffer.errorSum[i]);	// 전체 에러합?
 	}
 
+	writeData(&inputBuffer);
+	writeError(&inputBuffer);
 
 	return 0;
 }

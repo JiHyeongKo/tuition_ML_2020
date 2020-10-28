@@ -55,15 +55,13 @@ int initParam(inputData* inputBuffer)
 			}
 
 	for (i = 0; i < NUMBER_OF_INPUT; i++)
-	{
 		for (j = 0; j < NUMBER_OF_DATA; j++)
-		{
-			inputBuffer->x[i][j] = ((double)rand() / 32767.0) * 10 - 5;	// -5 ~ 5까지 값
-			inputBuffer->target[j] = ((((double)rand() / 32767.0) * 2 - 1) > 0);	// -1 ~ 1까지 값의 중간값인 0보다 크면 1, 아니면 0
-			inputBuffer->biasWeight[i] = ((double)rand() / 32767.0) * 2 - 1;	// -1 ~ 1까지 값
-			// biasWeight과 target은 두 번 할당된다. 그러나 나중 것을 사용. 코드 길이 줄이기 위해.
-		}
-	}
+			{
+				inputBuffer->x[i][j] = ((double)rand() / 32767.0) * 10 - 5;	// -5 ~ 5까지 값
+				inputBuffer->target[j] = ((double)rand() / 32767.0) * 2 - 1;	// -1 ~ 1까지 값
+				inputBuffer->biasWeight[i] = ((double)rand() / 32767.0) * 2 - 1;	// -1 ~ 1까지 값
+				// biasWeight, target are allocated twice. but we use later one. just for reducing code lines.
+			}
 		
 	return 0;
 }

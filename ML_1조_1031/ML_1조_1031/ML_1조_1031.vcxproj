@@ -140,6 +140,7 @@
   <ItemGroup>
     <ClCompile Include="arithmetic.c" />
     <ClCompile Include="buffer.c" />
+    <ClCompile Include="file.c" />
     <ClCompile Include="main.c" />
   </ItemGroup>
   <ItemGroup>
