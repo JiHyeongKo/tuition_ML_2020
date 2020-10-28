@@ -2,7 +2,25 @@
 
 int main(void)
 {
+	int i = 0;
+	int j = 0;
+	memset(&inputBuffer, 0, sizeof(inputData));
 
+	enterInput(&inputBuffer);
+	initParam(&inputBuffer);
+
+	for (i = 0; i < MAX_EPOCH; i++)
+	{
+		for (j = 0; j < NUMBER_OF_DATA; j++)
+		{
+			EBPCalc(&inputBuffer, j);
+			inputBuffer.errorSum[i] = inputBuffer.errorSum[i] + (pow(inputBuffer.error[j], 2.0) * 0.5);
+		}
+		printf("%d %lf\n", i, inputBuffer.errorSum[i]);	// 전체 에러합?
+	}
+
+
+	return 0;
 }
 
 /*
