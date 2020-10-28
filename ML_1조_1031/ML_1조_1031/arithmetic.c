@@ -10,7 +10,7 @@ int EBPCalc(inputData* inputBuffer, int order)
 	double delta[MAX_NUERON + NUMBER_OF_OUTPUT] = { 0, };
 	double deltaWeight[MAX_NUERON + NUMBER_OF_OUTPUT][MAX_NUERON + NUMBER_OF_OUTPUT] = { 0, };
 	double biasDeltaWeight = 0;
-	// ÀÔ·ÂÀÇ °¹¼ö Á¦¿ÜÇÑ, (È÷µç ·¹ÀÌ¾îÀÇ ´º·± °¹¼ö + Ãâ·Â´Ü) ¸¸Å­ ÇÊ¿ä
+	// ì…ë ¥ì˜ ê°¯ìˆ˜ ì œì™¸í•œ, (íˆë“  ë ˆì´ì–´ì˜ ë‰´ëŸ° ê°¯ìˆ˜ + ì¶œë ¥ë‹¨) ë§Œí¼ í•„ìš”
 
 	for (i = 0; i < (inputBuffer->nueron); i++)
 	{
@@ -24,10 +24,10 @@ int EBPCalc(inputData* inputBuffer, int order)
 	}
 
 	for (i = 0; i < (inputBuffer->nueron); i++)
-		sum = sum + (inputBuffer->output[i] * inputBuffer->weight[((inputBuffer->nueron + NUMBER_OF_OUTPUT) - 1)][i]);	// ÀüÃ¼ weight*input
-	sum = sum + (inputBuffer->bias * inputBuffer->biasWeight[order]);	// ÀüÃ¼ weight*input + bias
+		sum = sum + (inputBuffer->output[i] * inputBuffer->weight[((inputBuffer->nueron + NUMBER_OF_OUTPUT) - 1)][i]);	// ì „ì²´ weight*input
+	sum = sum + (inputBuffer->bias * inputBuffer->biasWeight[order]);	// ì „ì²´ weight*input + bias
 
-	///////////////// Àß ¸ğ¸£°Ú´Ù ¿©±âºÎÅÍ /////////////////
+	////////////////////////////////// ì˜ ëª¨ë¥´ê² ë‹¤ ì—¬ê¸°ë¶€í„° //////////////////////////////////
 	
 	inputBuffer->output[(inputBuffer->nueron + NUMBER_OF_OUTPUT) - 1] = 1 / (1 + pow(M_E, (-1 * sum)));	// last output(output layer output)
 	inputBuffer->y[order] = (inputBuffer->output[(inputBuffer->nueron + NUMBER_OF_OUTPUT) - 1] > THRESHOLD);	// last output>THRESHOLD? 1:0
@@ -51,15 +51,15 @@ int EBPCalc(inputData* inputBuffer, int order)
 		{
 			deltaWeight[i][j] = LEARNING_GAIN * delta[i] * inputBuffer->output[j];
 			// hidden layer delta weight
-			inputBuffer->weight[i][j] = inputBuffer->weight[i][j] - deltaWeight[i][j];	// ÀÌ°Ô ÇÃ·¯½ºÀÎÁö ¸¶ÀÌ³Ê½ºÀÎÁö ¸ğ¸£°Ú´Ù.
+			inputBuffer->weight[i][j] = inputBuffer->weight[i][j] + deltaWeight[i][j];	// ì´ê²Œ í”ŒëŸ¬ìŠ¤ì¸ì§€ ë§ˆì´ë„ˆìŠ¤ì¸ì§€ ëª¨ë¥´ê² ë‹¤.
 			//	hidden layer weight
 		}
 
 	biasDeltaWeight = LEARNING_GAIN * delta[(inputBuffer->nueron + NUMBER_OF_OUTPUT) - 1] * (inputBuffer->bias);
 	// bias delta weight
-	inputBuffer->biasWeight[order] = inputBuffer->biasWeight[order] - biasDeltaWeight;	// ÀÌ°Ô ÇÃ·¯½ºÀÎÁö ¸¶ÀÌ³Ê½ºÀÎÁö ¸ğ¸£°Ú´Ù.
+	inputBuffer->biasWeight[order] = inputBuffer->biasWeight[order] + biasDeltaWeight;	// ì´ê²Œ í”ŒëŸ¬ìŠ¤ì¸ì§€ ë§ˆì´ë„ˆìŠ¤ì¸ì§€ ëª¨ë¥´ê² ë‹¤.
 	//bias delta
 
-	///////////////// Àß ¸ğ¸£°Ú´Ù ¿©±â±îÁö /////////////////
+	////////////////////////////////// ì˜ ëª¨ë¥´ê² ë‹¤ ì—¬ê¸°ê¹Œì§€ //////////////////////////////////
 	return 0;
 }

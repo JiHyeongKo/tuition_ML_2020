@@ -4,7 +4,7 @@ int main(void)
 {
 	int i = 0;
 	int j = 0;
-	double cur = 1024, pre = 0;	// ÃÊ±â°ªÀº ÃæºÐÈ÷ Å« °ª.
+	double cur = 1024, pre = 0;	// ì´ˆê¸°ê°’ì€ ì¶©ë¶„ížˆ í° ê°’.
 
 	memset(&inputBuffer, 0, sizeof(inputData));
 
@@ -22,9 +22,9 @@ int main(void)
 		pre = cur;
 		cur = inputBuffer.errorSum[i];
 	
-		if (cur > pre)	// ±×·¡ÇÁ°¡ ³»·Á°¡´Ù°¡ ¿Ã¶ó°¡¸é...
-			break;
-		//printf("%d %lf\n", i, inputBuffer.errorSum[i]);	// ÀüÃ¼ ¿¡·¯ÇÕ?
+		//if (cur > pre)	// ê·¸ëž˜í”„ê°€ ë‚´ë ¤ê°€ë‹¤ê°€ ì˜¬ë¼ê°€ë©´...
+			//break;
+		//printf("%d %lf\n", i, inputBuffer.errorSum[i]);	// ì „ì²´ ì—ëŸ¬í•©?
 	}
 
 	writeData(&inputBuffer);
@@ -34,10 +34,10 @@ int main(void)
 }
 
 /*
-¹«¾ùÀ» ±¸ÇöÇØ¾ßÇÏ´Â°¡?
-0. EBP ¾Ë°í¸®Áò »ç¿ë - ÀÌ°Ç °Á ½ßÀ¸·Î ±¸Çö
-1. È÷µç´º·± °¹¼ö Á¶Àý°¡´É(3~10°³)
-2. epoch¿¡ µû¸¥ ¿¡·¯¸¦ error.txt ÆÄÀÏ ÀúÀå, Learning curve ±×¸®±â - file pointer¶û ÆÄÀÌ½ã
-3. y¿¡ ´ëÇÑ grid test(threshold: 0.5) - ÆÄÀÌ½ã
-4. Bias À¯¹« ±â´É Ãß°¡ - ¾ê´Â º¯¼ö¸¦ Ãß°¡ÇÏ°Å³ª ³ªÁß¿¡ ±¸Á¶Ã¼ º¯°æ
+ë¬´ì—‡ì„ êµ¬í˜„í•´ì•¼í•˜ëŠ”ê°€?
+0. EBP ì•Œê³ ë¦¬ì¦˜ ì‚¬ìš© - ì´ê±´ ê± ìŒ©ìœ¼ë¡œ êµ¬í˜„
+1. ížˆë“ ë‰´ëŸ° ê°¯ìˆ˜ ì¡°ì ˆê°€ëŠ¥(3~10ê°œ)
+2. epochì— ë”°ë¥¸ ì—ëŸ¬ë¥¼ error.txt íŒŒì¼ ì €ìž¥, Learning curve ê·¸ë¦¬ê¸° - file pointerëž‘ íŒŒì´ì¬
+3. yì— ëŒ€í•œ grid test(threshold: 0.5) - íŒŒì´ì¬
+4. Bias ìœ ë¬´ ê¸°ëŠ¥ ì¶”ê°€ - ì–˜ëŠ” ë³€ìˆ˜ë¥¼ ì¶”ê°€í•˜ê±°ë‚˜ ë‚˜ì¤‘ì— êµ¬ì¡°ì²´ ë³€ê²½
 */
