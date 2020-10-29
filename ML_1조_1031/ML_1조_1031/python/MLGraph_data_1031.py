@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import sys
-MAX_COUNT = 1000
+MAX_COUNT = 10000
     
 File = open('write_data.txt', 'r', encoding = 'utf-8')
 data = File.readline()
@@ -34,7 +34,7 @@ for i in range(1, MAX_COUNT, 1):
         x1_array[i]=x1_array[i-1]
     if ( x2_array[i] == '') or (x2_array[i] == '\n'):
         x2_array[i]=x2_array[i-1]
-    if ( t[i] == '') or (t[i] == '\n'):
+    if ( t[i] == '') or (t[i] == '\n') or (t[i] == '\n'):
         t[i]=t[i-1]
     if ( y[i] == '') or (y[i] == '\n'):
         y[i]=y[i-1]

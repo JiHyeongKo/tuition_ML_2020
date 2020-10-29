@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import sys
-MAX_COUNT = 1000
+MAX_COUNT = 10000
 ALLOW_ERROR = 0.001
 
 File = open('write_error.txt', 'r', encoding = 'utf-8')
@@ -21,6 +21,12 @@ for k in range(0, MAX_COUNT, 1):
     error_buffer = line[9:18]
     epoch_array[k] = epoch_buffer
     error_array[k] = error_buffer
+
+for i in range(1, MAX_COUNT, 1):
+    if ( epoch_array[i] == '') or (epoch_array[i] == '\n'):
+        epoch_array[i]=epoch_array[i-1]
+    if ( error_array[i] == '') or (error_array[i] == '\n'):
+        error_array[i]=error_array[i-1]
 
 for i in range(0, MAX_COUNT, 1):
     epoch_array[i] = float(epoch_array[i])
