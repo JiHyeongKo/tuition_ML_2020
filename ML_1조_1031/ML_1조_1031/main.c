@@ -21,7 +21,14 @@ int main(void)
 		}
 		
 		if (inputBuffer.errorSum[i] < ALLOW_TOTAL_ERROR)	// 에러가 상당히 작아지면 break
-			break;
+			{
+				double paddingValue = inputBuffer.errorSum[i];
+				
+				for (i; i < MAX_EPOCH; i++)
+					inputBuffer.errorSum[i] = paddingValue;
+					
+				break;
+		}
 	}
 
 	writeData(&inputBuffer);
