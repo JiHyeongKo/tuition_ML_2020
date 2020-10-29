@@ -4,7 +4,8 @@ int main(void)
 {
 	int i = 0;
 	int j = 0;
-	double cur = 1024, pre = 0;	// ì´ˆê¸°ê°’ì€ ì¶©ë¶„íˆ í° ê°’.
+	double x_inspect[2] = { 0, };
+	double error_inspect = 0;
 
 	memset(&inputBuffer, 0, sizeof(inputData));
 
@@ -16,28 +17,62 @@ int main(void)
 		for (j = 0; j < NUMBER_OF_DATA; j++)
 		{
 			EBPCalc(&inputBuffer, j);
-			inputBuffer.errorSum[i] = inputBuffer.errorSum[i] + (pow(inputBuffer.error[j], 2.0) * 0.5);
+			inputBuffer.errorSum[i] = inputBuffer.errorSum[i] + (inputBuffer.error[j]);
 		}
 		
-		pre = cur;
-		cur = inputBuffer.errorSum[i];
-	
-		//if (cur > pre)	// ê·¸ë˜í”„ê°€ ë‚´ë ¤ê°€ë‹¤ê°€ ì˜¬ë¼ê°€ë©´...
-			//break;
-		//printf("%d %lf\n", i, inputBuffer.errorSum[i]);	// ì „ì²´ ì—ëŸ¬í•©?
+		if (inputBuffer.errorSum[i] < ALLOW_TOTAL_ERROR)	// ¿¡·¯°¡ »ó´çÈ÷ ÀÛ¾ÆÁö¸é break
+			break;
 	}
 
 	writeData(&inputBuffer);
 	writeError(&inputBuffer);
 
-	return 0;
+	////////////// weight °ËÁõ½Ã°£!, ±âÁ¸¿¡ ¸¸µç Æ¯Á¤ÇÑ »ï°¢Çü ³»ºÎ¿¡ ÀÖ´Â ¾Æ¹« ¼ıÀÚ³ª ³Ö¾î¼­ ¿¡·¯ °ËÃâ //////////////
+	printf("Enter the any input X1, X2 ( -5 < X < 5 )\n");
+	printf("If they are in the triangle that you generated, the EBP function will inspect it.\n");
+	
+	while (1)
+	{
+		printf("X1 X2: ");
+		scanf_s("%lf", &x_inspect[0]);
+		scanf_s(" %lf", &x_inspect[1]);
+
+		if (inspectTriangle(x_inspect, POSITIVE_INTERCEPT, POSITIVE_INTERCEPT, POSITIVE_INTERCEPT))
+		{
+			printf("You enter %lf, %lf\n", x_inspect[0], x_inspect[1]);
+			break;
+		}
+
+		else
+		{
+			printf("You need to enter other numbers.\n");
+			continue;
+		}
+	}
+
+	inputBuffer.x[0][0] = x_inspect[0];
+	inputBuffer.x[1][0] = x_inspect[1];
+	EBPCalc(&inputBuffer, 0);
+	inputBuffer.error[0] = (inputBuffer.error[0] > THRESHOLD);
+
+	if (inputBuffer.error[0] == 1)	// error°¡ ¸¹ÀÌ ÀÖÀ¸¸é
+	{
+		printf("There is fatal error\n");
+		return -1;
+	}
+
+	else if (inputBuffer.error[0] == 0)	// error°¡ °ÅÀÇ ¾øÀ¸¸é
+	{
+		printf("Well Done!\n");
+		return 0;
+	}
 }
 
 /*
-ë¬´ì—‡ì„ êµ¬í˜„í•´ì•¼í•˜ëŠ”ê°€?
-0. EBP ì•Œê³ ë¦¬ì¦˜ ì‚¬ìš© - ì´ê±´ ê± ìŒ©ìœ¼ë¡œ êµ¬í˜„
-1. íˆë“ ë‰´ëŸ° ê°¯ìˆ˜ ì¡°ì ˆê°€ëŠ¥(3~10ê°œ)
-2. epochì— ë”°ë¥¸ ì—ëŸ¬ë¥¼ error.txt íŒŒì¼ ì €ì¥, Learning curve ê·¸ë¦¬ê¸° - file pointerë‘ íŒŒì´ì¬
-3. yì— ëŒ€í•œ grid test(threshold: 0.5) - íŒŒì´ì¬
-4. Bias ìœ ë¬´ ê¸°ëŠ¥ ì¶”ê°€ - ì–˜ëŠ” ë³€ìˆ˜ë¥¼ ì¶”ê°€í•˜ê±°ë‚˜ ë‚˜ì¤‘ì— êµ¬ì¡°ì²´ ë³€ê²½
+¹«¾ùÀ» ±¸ÇöÇØ¾ßÇÏ´Â°¡?
+0. EBP ¾Ë°í¸®Áò »ç¿ë - ÀÌ°Ç °Á ½ßÀ¸·Î ±¸Çö
+1. È÷µç´º·± °¹¼ö Á¶Àı°¡´É(3~10°³)
+2. epoch¿¡ µû¸¥ ¿¡·¯¸¦ error.txt ÆÄÀÏ ÀúÀå, Learning curve ±×¸®±â - file pointer¶û ÆÄÀÌ½ã
+3. y¿¡ ´ëÇÑ grid test(threshold: 0.5) - ÆÄÀÌ½ã
+4. Bias À¯¹« ±â´É Ãß°¡ - ¾ê´Â º¯¼ö¸¦ Ãß°¡ÇÏ°Å³ª ³ªÁß¿¡ ±¸Á¶Ã¼ º¯°æ
 */

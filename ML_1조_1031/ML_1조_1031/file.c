@@ -11,10 +11,10 @@ int writeData(inputData* inputBuffer)	// 입출력 데이터 저장
 
 		for (int i = 0; i < NUMBER_OF_DATA; i++)
 		{
-			fprintf_s(pFile, "%lf\t", inputBuffer->x[0][i]);
-			fprintf_s(pFile, "%lf\t", inputBuffer->x[1][i]);
-			fprintf_s(pFile, "%lf\t", inputBuffer->target[i]);
-			fprintf_s(pFile, "%lf\n", inputBuffer->y[i]);	// y가 1이면 y와 타겟간의 간격이 0.5 이하..?
+			fprintf_s(pFile, "%+lf\t", inputBuffer->x[0][i]);
+			fprintf_s(pFile, "%+lf\t", inputBuffer->x[1][i]);
+			fprintf_s(pFile, "%+lf\t", inputBuffer->target[i]);
+			fprintf_s(pFile, "%+lf\n", inputBuffer->y[i]);	// y가 1이면 y와 타겟간의 간격이 0.5 이하..?
 		}
 
 		fclose(pFile);
@@ -40,7 +40,7 @@ int writeError(inputData* inputBuffer)	// Epoch마다 Error 저장
 
 		for (int i = 0; i < MAX_EPOCH; i++)
 		{
-			fprintf_s(pFile, "%d\t", MAX_EPOCH - epoch);
+			fprintf_s(pFile, "%08d\t", MAX_EPOCH - epoch);
 			fprintf_s(pFile, "%lf\n", inputBuffer->errorSum[i]);
 			epoch--;
 		}

@@ -10,7 +10,7 @@ int EBPCalc(inputData* inputBuffer, int order)
 	double delta[MAX_NUERON + NUMBER_OF_OUTPUT] = { 0, };
 	double deltaWeight[MAX_NUERON + NUMBER_OF_OUTPUT][MAX_NUERON + NUMBER_OF_OUTPUT] = { 0, };
 	double biasDeltaWeight = 0;
-	// 입력의 갯수 제외한, (히든 레이어의 뉴런 갯수 + 출력단) 만큼 필요
+	// �Է��� ���� ������, (���� ���̾��� ���� ���� + ��´�) ��ŭ �ʿ�
 
 	for (i = 0; i < (inputBuffer->nueron); i++)
 	{
@@ -24,14 +24,12 @@ int EBPCalc(inputData* inputBuffer, int order)
 	}
 
 	for (i = 0; i < (inputBuffer->nueron); i++)
-		sum = sum + (inputBuffer->output[i] * inputBuffer->weight[((inputBuffer->nueron + NUMBER_OF_OUTPUT) - 1)][i]);	// 전체 weight*input
-	sum = sum + (inputBuffer->bias * inputBuffer->biasWeight[order]);	// 전체 weight*input + bias
-
-	////////////////////////////////// 잘 모르겠다 여기부터 //////////////////////////////////
+		sum = sum + (inputBuffer->output[i] * inputBuffer->weight[((inputBuffer->nueron + NUMBER_OF_OUTPUT) - 1)][i]);	// ��ü weight*input
+	sum = sum + (inputBuffer->bias * inputBuffer->biasWeight[order]);	// ��ü weight*input + bias
 	
 	inputBuffer->output[(inputBuffer->nueron + NUMBER_OF_OUTPUT) - 1] = 1 / (1 + pow(M_E, (-1 * sum)));	// last output(output layer output)
-	inputBuffer->y[order] = (inputBuffer->output[(inputBuffer->nueron + NUMBER_OF_OUTPUT) - 1] > THRESHOLD);	// last output>THRESHOLD? 1:0
-	inputBuffer->error[order] = fabs(inputBuffer->output[(inputBuffer->nueron + NUMBER_OF_OUTPUT)] - inputBuffer->target[order]);	// error = |last output - taget |
+	inputBuffer->y[order] = (inputBuffer->output[(inputBuffer->nueron + NUMBER_OF_OUTPUT) - 1]);	//y = last output
+	inputBuffer->error[order] = fabs(inputBuffer->y[order] - inputBuffer->target[order]);	// error = | last output - taget |
 	
 	////////////////// Error Back Propagation //////////////////	
 	
@@ -51,15 +49,14 @@ int EBPCalc(inputData* inputBuffer, int order)
 		{
 			deltaWeight[i][j] = LEARNING_GAIN * delta[i] * inputBuffer->output[j];
 			// hidden layer delta weight
-			inputBuffer->weight[i][j] = inputBuffer->weight[i][j] + deltaWeight[i][j];	// 이게 플러스인지 마이너스인지 모르겠다.
+			inputBuffer->weight[i][j] = inputBuffer->weight[i][j] + deltaWeight[i][j];
 			//	hidden layer weight
 		}
 
 	biasDeltaWeight = LEARNING_GAIN * delta[(inputBuffer->nueron + NUMBER_OF_OUTPUT) - 1] * (inputBuffer->bias);
 	// bias delta weight
-	inputBuffer->biasWeight[order] = inputBuffer->biasWeight[order] + biasDeltaWeight;	// 이게 플러스인지 마이너스인지 모르겠다.
+	inputBuffer->biasWeight[order] = inputBuffer->biasWeight[order] + biasDeltaWeight;
 	//bias delta
 
-	////////////////////////////////// 잘 모르겠다 여기까지 //////////////////////////////////
 	return 0;
 }

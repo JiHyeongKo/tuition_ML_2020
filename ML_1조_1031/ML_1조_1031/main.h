@@ -10,14 +10,17 @@
 #include <math.h>
 
 #define MAX_NUERON 10
-#define MAX_EPOCH 10000
+#define MAX_EPOCH 1000
+#define ALLOW_ERROR 0.001
+#define ALLOW_TOTAL_ERROR MAX_EPOCH * ALLOW_ERROR
 #define LEARNING_GAIN 0.5	// LEARNING_GAIN(ETHA) : (0~1)
 #define THRESHOLD 0.5
+#define POSITIVE_INTERCEPT 3
 
 #define NUMBER_OF_BIAS 1
 #define NUMBER_OF_INPUT 2
 #define NUMBER_OF_OUTPUT 1
-#define NUMBER_OF_DATA 50
+#define NUMBER_OF_DATA 100
 
 typedef struct inputData
 {
@@ -38,6 +41,8 @@ inputData inputBuffer;
 
 int enterInput(inputData* inputBuffer);
 int initParam(inputData* inputBuffer);
+int makeTriangle(inputData* inputBuffer, int order, signed int intercept1, signed int intercept2, signed int intercept3);
+int inspectTriangle(double* inputBuffer, signed int intercept1, signed int intercept2, signed int intercept3);
 
 int EBPCalc(inputData* inputBuffer, int order);
 

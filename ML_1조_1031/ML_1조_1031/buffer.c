@@ -54,14 +54,38 @@ int initParam(inputData* inputBuffer)
 				//printf("weight[%d][%d] = %lf\n", i, j, inputBuffer->weight[i][j]);
 			}
 
-	for (i = 0; i < NUMBER_OF_INPUT; i++)
-		for (j = 0; j < NUMBER_OF_DATA; j++)
-			{
+	
+	for (j = 0; j < NUMBER_OF_DATA; j++)
+		{
+			for (i = 0; i < NUMBER_OF_INPUT; i++)
 				inputBuffer->x[i][j] = ((double)rand() / 32767.0) * 10 - 5;	// -5 ~ 5까지 값
-				inputBuffer->target[j] = ((double)rand() / 32767.0) * 2 - 1;	// -1 ~ 1까지 값
-				inputBuffer->biasWeight[i] = ((double)rand() / 32767.0) * 2 - 1;	// -1 ~ 1까지 값
+
+			inputBuffer->target[j] = makeTriangle(inputBuffer, j, POSITIVE_INTERCEPT, POSITIVE_INTERCEPT, POSITIVE_INTERCEPT);	// intercept는 양수이면서 5보다 작은 값으로..
+			inputBuffer->biasWeight[j] = ((double)rand() / 32767.0) * 2 - 1;	// -1 ~ 1까지 값
 				// biasWeight, target are allocated twice. but we use later one. just for reducing code lines.
-			}
-		
+		}
+
 	return 0;
+}
+
+int makeTriangle(inputData* inputBuffer, int order, signed int intercept1, signed int intercept2, signed int intercept3)
+{
+	if (((inputBuffer->x[0][order] + (inputBuffer->x[1][order] - intercept1)) < 0) &&
+		((inputBuffer->x[0][order] - (inputBuffer->x[1][order] - intercept2)) > 0) &&
+		((inputBuffer->x[1][order] + intercept3) > 0))	// 특정한 삼각형 안에 있으면...
+		return 1;	// target = 1
+
+	else	// 특정한 삼각형 밖에 있으면...
+		return 0;	// target = 0
+}
+
+int inspectTriangle(double* inputBuffer, signed int intercept1, signed int intercept2, signed int intercept3)
+{
+	if (((inputBuffer[0] + (inputBuffer[1] - intercept1)) < 0) &&
+		((inputBuffer[0] - (inputBuffer[1] - intercept1)) > 0) &&
+		((inputBuffer[1] + intercept1) > 0))	// 특정한 삼각형 안에 있으면...
+		return 1;	// target = 1
+
+	else	// 특정한 삼각형 밖에 있으면...
+		return 0;	// target = 0
 }
