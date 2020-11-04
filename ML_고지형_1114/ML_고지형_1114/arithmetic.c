@@ -7,7 +7,7 @@ int EBPCalc(inputData* inputBuffer, int order)
 	int k = 0;
 	int numLayer_1 = inputBuffer->layer - 1;	// number of layer - 1 : for array.
 	int try = MAX_EPOCH;
-	double sum = 0;
+	double sum[NUMBER_OF_OUTPUT] = { 0, };
 	double sumBuffer[MAX_LAYER][MAX_NUERON] = { 0, };
 	double delta[MAX_LAYER][MAX_NUERON + NUMBER_OF_OUTPUT] = { 0, };
 	double deltaWeight[MAX_LAYER][MAX_NUERON + NUMBER_OF_OUTPUT][MAX_NUERON + NUMBER_OF_OUTPUT] = { 0, };
@@ -27,18 +27,22 @@ int EBPCalc(inputData* inputBuffer, int order)
 			inputBuffer->output[i][j] = 1 / (1 + pow(M_E, (-1 * sumBuffer[i][j])));	// hidden layer output
 		}
 
-		for (j = 0; j < (inputBuffer->nueron[i]); j++)
-			sum = sum + (inputBuffer->output[i][j] * inputBuffer->weight[i][((inputBuffer->nueron[i] + NUMBER_OF_OUTPUT) - 1)][j]);	// 전체 weight*input
-		sum = sum + (inputBuffer->bias * inputBuffer->biasWeight[order]);	// 전체 weight*input + bias
+		for (k = 0; k < NUMBER_OF_OUTPUT; k++)
+		{
+			for (j = 0; j < (inputBuffer->nueron[i]); j++)
+				sum[k] = sum[k] + (inputBuffer->output[i][j] * inputBuffer->weight[i][(inputBuffer->nueron[i] + k)][j]);	// 전체 weight*input
+			sum[k] = sum[k] + (inputBuffer->bias * inputBuffer->biasWeight[order]);	// 전체 weight*input + bias
+
+		}
 	}
 
-	inputBuffer->output[numLayer_1][(inputBuffer->nueron[numLayer_1] + NUMBER_OF_OUTPUT) - 1] = 1 / (1 + pow(M_E, (-1 * sum)));	// last output(output layer output)
-	inputBuffer->y[order] = (inputBuffer->output[numLayer_1][(inputBuffer->nueron[numLayer_1] + NUMBER_OF_OUTPUT) - 1]);	//y = last output
-	inputBuffer->error[order] = fabs(inputBuffer->y[order] - inputBuffer->target[order]);	// error = | last output - taget |
-	
-	////////////////// Error Back Propagation //////////////////
 	for (i = 0; i < NUMBER_OF_OUTPUT; i++)
 	{
+		inputBuffer->output[numLayer_1][inputBuffer->nueron[numLayer_1] + i] = 1 / (1 + pow(M_E, (-1 * sum[i])));	// last output(output layer output)
+		inputBuffer->y[i][order] = (inputBuffer->output[numLayer_1][inputBuffer->nueron[numLayer_1] + i]);	//y = last output
+		inputBuffer->error[i][order] = fabs(inputBuffer->y[i][order] - inputBuffer->target[order]);	// error = | last output - taget |
+	
+		////////////////// Error Back Propagation //////////////////
 		delta[numLayer_1][inputBuffer->nueron[numLayer_1] + i] = (inputBuffer->target[order] - inputBuffer->output[numLayer_1][inputBuffer->nueron[numLayer_1] + i]) *
 			(inputBuffer->output[numLayer_1][inputBuffer->nueron[numLayer_1] + i]) *
 			(1 - (inputBuffer->output[numLayer_1][inputBuffer->nueron[numLayer_1] + i]));
@@ -72,6 +76,52 @@ int EBPCalc(inputData* inputBuffer, int order)
 		inputBuffer->biasWeight[order] = inputBuffer->biasWeight[order] + biasDeltaWeight;
 		//bias delta
 	}
-
+	
 	return 0;
+}
+
+int inspectResult(double* x_inspect)
+{
+	int errorSum = 0;
+	int i = 0;
+	while (1)
+	{
+		printf("X1 X2: ");
+		scanf_s("%lf", &x_inspect[0]);
+		scanf_s(" %lf", &x_inspect[1]);
+		
+		if (inspectTriangle(x_inspect, X1_INTERCEPT, X2_INTERCEPT, HORIZON_INTERCEPT))
+		{
+			printf("You enter %lf, %lf\n", x_inspect[0], x_inspect[1]);
+			break;
+		}
+
+		else
+		{
+			printf("You need to enter other numbers.\n");
+			continue;
+		}
+	}
+
+	inputBuffer.x[0][0] = x_inspect[0];
+	inputBuffer.x[1][0] = x_inspect[1];
+	EBPCalc(&inputBuffer, 0);
+	
+	for(i= 0; i<NUMBER_OF_OUTPUT; i++)
+		inputBuffer.error[i][0] = (inputBuffer.error[i][0] > THRESHOLD);
+
+	for (i = 0; i < NUMBER_OF_OUTPUT; i++)
+		errorSum = errorSum + inputBuffer.error[i][0];
+
+		if (errorSum > 0)	// error가 많이 있으면
+		{
+			printf("There is fatal error\n");
+			return -1;
+		}
+
+		else if (errorSum == 0)	// error가 거의 없으면
+		{
+			printf("Well Done!\n");
+			return 0;
+		}
 }

@@ -95,7 +95,7 @@ int initParam(inputData* inputBuffer)
 			for (i = 0; i < NUMBER_OF_INPUT; i++)
 				inputBuffer->x[i][j] = ((double)rand() / 32767.0) * 10 - 5;	// -5 ~ 5까지 값
 
-			inputBuffer->target[j] = makeTriangle(inputBuffer, j, POSITIVE_INTERCEPT, POSITIVE_INTERCEPT, POSITIVE_INTERCEPT);	// intercept는 양수이면서 5보다 작은 값으로..
+			inputBuffer->target[j] = makeTriangle(inputBuffer, j, X1_INTERCEPT, X2_INTERCEPT, HORIZON_INTERCEPT);	// intercept는 양수이면서 5보다 작은 값으로..
 			inputBuffer->biasWeight[j] = ((double)rand() / 32767.0) * 2 - 1;	// -1 ~ 1까지 값
 				// biasWeight, target are allocated twice. but we use later one. just for reducing code lines.
 		}
@@ -103,7 +103,7 @@ int initParam(inputData* inputBuffer)
 	return 0;
 }
 
-int makeTriangle(inputData* inputBuffer, int order, unsigned int intercept1, unsigned int intercept2, unsigned int intercept3)	// for random data
+int makeTriangle(inputData* inputBuffer, int order, int intercept1, int intercept2, int intercept3)	// for random data
 {
 	if (((inputBuffer->x[0][order] + (inputBuffer->x[1][order] - intercept1)) < 0) &&
 		((inputBuffer->x[0][order] - (inputBuffer->x[1][order] - intercept2)) > 0) &&
@@ -114,7 +114,7 @@ int makeTriangle(inputData* inputBuffer, int order, unsigned int intercept1, uns
 		return 0;	// target = 0
 }
 
-int inspectTriangle(double* inputBuffer, unsigned int intercept1, unsigned int intercept2, unsigned int intercept3)	// for inspection
+int inspectTriangle(double* inputBuffer, int intercept1, int intercept2, int intercept3)	// for inspection
 {
 	if (((inputBuffer[0] + (inputBuffer[1] - intercept1)) < 0) &&
 		((inputBuffer[0] - (inputBuffer[1] - intercept1)) > 0) &&
