@@ -106,11 +106,11 @@ int inspectTriangle(double* inputBuffer, int intercept1, int intercept2, int int
 		return 0;	// target = 0
 }
 
-int gridTriangle(gridData* gridBuffer, int grid_x0, int grid_x1, int intercept1, int intercept2, int intercept3)	// for grid inspection
+int gridTriangle(gridData* gridBuffer, int grid_x1, int grid_x2, int intercept1, int intercept2, int intercept3)	// for grid inspection
 {
-	if (((gridBuffer->x[1][grid_x1] - gridBuffer->x[0][grid_x0] - intercept1) < 0) &&
-		((gridBuffer->x[1][grid_x1] + gridBuffer->x[0][grid_x0] - intercept2) < 0) &&
-		((gridBuffer->x[1][grid_x1] - intercept3) > 0))	// 특정한 삼각형 안에 있으면...
+	if (((gridBuffer->x[1][grid_x2] - gridBuffer->x[0][grid_x1] - intercept1) < 0) &&
+		((gridBuffer->x[1][grid_x2] + gridBuffer->x[0][grid_x1] - intercept2) < 0) &&
+		((gridBuffer->x[1][grid_x2] - intercept3) > 0))	// 특정한 삼각형 안에 있으면...
 		return 1;	// target = 1
 
 	else	// 특정한 삼각형 밖에 있으면...
