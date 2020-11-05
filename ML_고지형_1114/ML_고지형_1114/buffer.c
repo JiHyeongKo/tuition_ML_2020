@@ -46,23 +46,6 @@ int enterInput(inputData* inputBuffer)
 
 			else
 			{
-				/*
-				if (i == 0)	// 처음 입력인 경우
-				{
-					inputBuffer->weightNumber[i] = (NUMBER_OF_INPUT + inputBuffer->bias) * inputBuffer->nueron[i];
-				}
-
-				else if (i == ((inputBuffer->layer) - 1))	// 마지막 입력인 경우
-				{
-					inputBuffer->weightNumber[i] = (inputBuffer->nueron[i-1] + inputBuffer->bias) * NUMBER_OF_OUTPUT;
-				}
-
-				else	// 처음 입력이나 마지막 입력이 아닌 경우
-				{
-					inputBuffer->weightNumber[i] = (inputBuffer->nueron[i-1] + inputBuffer->bias) * inputBuffer->nueron[i];
-				}
-				// hidden layer로 가는 weight는 bias가 있으면 (input+1)*n개, 없으면 (input)*n개
-				*/
 				i++;
 			}
 		}
@@ -80,20 +63,18 @@ int initParam(inputData* inputBuffer)
 	int i = 0;
 	int j = 0;
 	int k = 0;
+	int numOutput = 0;
 
 	for (i=0; i<(inputBuffer->layer); i++)	// random weight generator
 		for (j = 0; j < (inputBuffer->nueron[i] + NUMBER_OF_OUTPUT); j++)
 			for (k = 0; k < (inputBuffer->bias + NUMBER_OF_INPUT); k++)
-				{
-					inputBuffer->weight[i][j][k] = ((double)rand() / 32767.0) * 2 - 1;	// -1 ~ 1까지 값
-					//printf("weight[%d][%d][%d] = %lf\n", i, j, k, inputBuffer->weight[i][j][k]);
-				}
-
+				for(numOutput = 0; numOutput<NUMBER_OF_OUTPUT; numOutput++)
+					inputBuffer->weight[numOutput][i][j][k] = ((double)rand() / 32767.0) * 2 - 1;	// -1 ~ 1까지 값
 	
 	for (j = 0; j < NUMBER_OF_DATA; j++)	// random data generator
 		{
-			for (i = 0; i < NUMBER_OF_INPUT; i++)
-				inputBuffer->x[i][j] = ((double)rand() / 32767.0) * 10 - 5;	// -5 ~ 5까지 값
+		for (i = 0; i < NUMBER_OF_INPUT; i++)
+			inputBuffer->x[i][j] = (((double)(rand() % 20) - 10.0) / 5.0);	// -2.0 ~ 2.0까지 값
 
 			inputBuffer->target[j] = makeTriangle(inputBuffer, j, X1_INTERCEPT, X2_INTERCEPT, HORIZON_INTERCEPT);	// intercept는 양수이면서 5보다 작은 값으로..
 			inputBuffer->biasWeight[j] = ((double)rand() / 32767.0) * 2 - 1;	// -1 ~ 1까지 값
@@ -105,20 +86,31 @@ int initParam(inputData* inputBuffer)
 
 int makeTriangle(inputData* inputBuffer, int order, int intercept1, int intercept2, int intercept3)	// for random data
 {
-	if (((inputBuffer->x[0][order] + (inputBuffer->x[1][order] - intercept1)) < 0) &&
-		((inputBuffer->x[0][order] - (inputBuffer->x[1][order] - intercept2)) > 0) &&
-		((inputBuffer->x[1][order] + intercept3) > 0))	// 특정한 삼각형 안에 있으면...
+	if (((inputBuffer->x[1][order] - inputBuffer->x[0][order] - intercept1) < 0) &&
+		((inputBuffer->x[1][order] + inputBuffer->x[0][order] - intercept2) < 0) &&
+		((inputBuffer->x[1][order] - intercept3) > 0))	// 특정한 삼각형 안에 있으면...
+		return 1;	// target = 1
+
+	else	// 특정한 삼각형 밖에 있으면...
+		return 0;	// target = 0
+}/////////////////////// 얘가 3D여서 그렇구나...!
+
+int inspectTriangle(double* inputBuffer, int intercept1, int intercept2, int intercept3)	// for inspection
+{
+	if (((inputBuffer[1] - inputBuffer[0] - intercept1) < 0) &&
+		((inputBuffer[1] + inputBuffer[0] - intercept2) < 0) &&
+		((inputBuffer[1] - intercept3) > 0))	// 특정한 삼각형 안에 있으면...
 		return 1;	// target = 1
 
 	else	// 특정한 삼각형 밖에 있으면...
 		return 0;	// target = 0
 }
 
-int inspectTriangle(double* inputBuffer, int intercept1, int intercept2, int intercept3)	// for inspection
+int gridTriangle(gridData* gridBuffer, int grid_x0, int grid_x1, int intercept1, int intercept2, int intercept3)	// for grid inspection
 {
-	if (((inputBuffer[0] + (inputBuffer[1] - intercept1)) < 0) &&
-		((inputBuffer[0] - (inputBuffer[1] - intercept1)) > 0) &&
-		((inputBuffer[1] + intercept1) > 0))	// 특정한 삼각형 안에 있으면...
+	if (((gridBuffer->x[1][grid_x1] - gridBuffer->x[0][grid_x0] - intercept1) < 0) &&
+		((gridBuffer->x[1][grid_x1] + gridBuffer->x[0][grid_x0] - intercept2) < 0) &&
+		((gridBuffer->x[1][grid_x1] - intercept3) > 0))	// 특정한 삼각형 안에 있으면...
 		return 1;	// target = 1
 
 	else	// 특정한 삼각형 밖에 있으면...
