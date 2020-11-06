@@ -42,7 +42,10 @@ int makeGrid(gridData* gridBuffer)
 			}
 
 			else
-				gridBuffer->grid[NUMBER_OF_DATA * k + i] = 0;
+			{
+				gridBuffer->grid[NUMBER_OF_DATA * k + i] = -1;
+				printf("Problem: %lf %lf", inputBuffer.x[0][0], inputBuffer.x[1][0]);
+			}
 		}
 
 	fopen_s(&pFile, ".\\python\\grid_test.txt", "wt");
