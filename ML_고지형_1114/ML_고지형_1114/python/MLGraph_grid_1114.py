@@ -45,10 +45,9 @@ plt.grid(b=True, which='both', axis='both')
 plt.xlabel('X1')
 plt.ylabel('X2')
 
-for i in range(0, MAX_DATA):
-    for j in range(0, MAX_DATA):
-        if(grid_array[100*i + j] == 1):
-            plt.scatter(x1_array[i], x2_array[j])
+for k in range(0, MAX_COUNT):
+    if(grid_array[k] == 1):       
+        plt.scatter(x1_array[k], x2_array[k])
 
 plt.show()
 
