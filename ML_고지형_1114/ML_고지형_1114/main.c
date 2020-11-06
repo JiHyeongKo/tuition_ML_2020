@@ -32,8 +32,10 @@ int main(void)
 	makeGrid(&gridBuffer);
 
 	////////////// weight 검증시간!, 기존에 만든 특정한 삼각형 내부에 있는 아무 숫자나 넣어서 에러 검출 //////////////
+
 	printf("Enter the any input X1, X2 ( -5 < X < 5 )\n");
 	printf("If they are in the triangle that you generated, the EBP function will inspect it.\n");
-	
+	printf("Your trinagle range: (X2 < X1 + %d) && (X2 < -X1 + %d < 0) && (X1 > %+d)\n", X1_INTERCEPT, X2_INTERCEPT, -1*HORIZON_INTERCEPT);
+
 	inspectResult(x_inspect);
 }

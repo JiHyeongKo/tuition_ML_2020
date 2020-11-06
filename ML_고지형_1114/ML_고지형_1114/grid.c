@@ -65,7 +65,7 @@ int makeGrid(gridData* gridBuffer)
 			}
 		}
 
-
+		/*
 		for (int k = NUMBER_OF_GRID_DATA - 1; k >= 0; k--)
 		{
 			for (int j = 0; j < NUMBER_OF_GRID_DATA; j++)
@@ -79,6 +79,7 @@ int makeGrid(gridData* gridBuffer)
 
 			printf("\n");
 		}
+		*/
 
 		fclose(pFile);
 	}

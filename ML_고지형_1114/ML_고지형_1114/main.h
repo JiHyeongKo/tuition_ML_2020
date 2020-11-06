@@ -11,7 +11,7 @@
 
 #define MAX_NUERON 15
 #define MIN_NUERON 3
-#define MAX_LAYER 5
+#define MAX_LAYER 2
 #define MIN_LAYER 1
 
 #define MAX_EPOCH 10000
