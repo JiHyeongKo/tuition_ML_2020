@@ -44,7 +44,7 @@ int makeGrid(gridData* gridBuffer)
 			else
 			{
 				gridBuffer->grid[NUMBER_OF_DATA * k + i] = -1;
-				printf("Problem: %lf %lf", inputBuffer.x[0][0], inputBuffer.x[1][0]);
+				printf("Problem: %lf %lf\n", inputBuffer.x[0][0], inputBuffer.x[1][0]);
 			}
 		}
 
@@ -67,22 +67,6 @@ int makeGrid(gridData* gridBuffer)
 				fprintf_s(pFile, "\n");
 			}
 		}
-
-		/*
-		for (int k = NUMBER_OF_GRID_DATA - 1; k >= 0; k--)
-		{
-			for (int j = 0; j < NUMBER_OF_GRID_DATA; j++)
-			{
-				if (gridBuffer->grid[NUMBER_OF_GRID_DATA * j + k])
-					printf("%c", BLACK);
-				else
-					printf("%c", SPACE);
-				//printf("%d", gridBuffer->grid[NUMBER_OF_GRID_DATA * j + k]);
-			}
-
-			printf("\n");
-		}
-		*/
 
 		fclose(pFile);
 	}

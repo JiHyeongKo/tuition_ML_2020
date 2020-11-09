@@ -20,8 +20,8 @@
 #define LEARNING_GAIN 0.5	// LEARNING_GAIN(ETHA) : (0~1)
 #define THRESHOLD 0.5
 
-#define X1_INTERCEPT 5 // positive: over X1 line. negative: below X1 line.
-#define X2_INTERCEPT 0 // positive: over X1 line. negative: below X1 line.
+#define X1_INTERCEPT 3 // positive: over X1 line. negative: below X1 line.
+#define X2_INTERCEPT 3 // positive: over X1 line. negative: below X1 line.
 #define HORIZON_INTERCEPT 0	// positive: over X1 line. negative: below X1 line.
 
 #define NUMBER_OF_BIAS 1
@@ -30,9 +30,6 @@
 #define NUMBER_OF_LAYER 2
 #define NUMBER_OF_DATA 100
 #define NUMBER_OF_GRID_DATA NUMBER_OF_DATA
-
-#define SPACE ' '
-#define	BLACK 'O'
 
 typedef struct inputData
 {

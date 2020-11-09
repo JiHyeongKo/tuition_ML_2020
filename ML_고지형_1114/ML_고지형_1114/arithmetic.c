@@ -83,6 +83,10 @@ int EBPCalc(inputData* inputBuffer, int order)
 
 int inspectResult(double* x_inspect)
 {
+	printf("Enter the any input X1, X2 ( -5 < X < 5 )\n");
+	printf("If they are in the triangle that you generated, the EBP function will inspect it.\n");
+	printf("Your trinagle range: (X2 < X1 + %d) && (X2 < -X1 + %d) && (X1 > %+d)\n", X1_INTERCEPT, X2_INTERCEPT, -1 * HORIZON_INTERCEPT);
+
 	double totalOutputError = 0;
 
 	while (1)
@@ -93,14 +97,14 @@ int inspectResult(double* x_inspect)
 
 		if (inspectTriangle(x_inspect, X1_INTERCEPT, X2_INTERCEPT, HORIZON_INTERCEPT))
 		{
-			printf("You enter %lf, %lf\n", x_inspect[0], x_inspect[1]);
+			printf("You enter %lf, %lf there are inside.\n", x_inspect[0], x_inspect[1]);
 			break;
 		}
 
 		else
 		{
-			printf("You need to enter other numbers.\n");
-			continue;
+			printf("You enter %lf %lf there are outside.\n", x_inspect[0], x_inspect[1]);
+			break;
 		}
 	}
 
