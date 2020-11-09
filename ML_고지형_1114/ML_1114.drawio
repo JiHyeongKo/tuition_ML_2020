@@ -1,0 +1,83 @@
+<mxfile host="app.diagrams.net" modified="2020-11-09T04:26:42.334Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.106 Whale/2.8.108.15 Safari/537.36" etag="XCvpHrvpRjqmfoD-MeDr" version="13.9.2" type="github">
+  <diagram id="fk2PlhvJVO4x0_L1LiEM" name="Page-1">
+    <mxGraphModel dx="988" dy="544" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="YR47ztt-985eAeslMe9S-3" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="YR47ztt-985eAeslMe9S-1" target="YR47ztt-985eAeslMe9S-2" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="YR47ztt-985eAeslMe9S-1" value="Start&lt;br&gt;" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="112" y="40" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="YR47ztt-985eAeslMe9S-16" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="YR47ztt-985eAeslMe9S-2" target="YR47ztt-985eAeslMe9S-15" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="YR47ztt-985eAeslMe9S-2" value="Select the number of layers&lt;br&gt;Select whether to use 1 as bias&lt;br&gt;Select the number of neurons&lt;br&gt;&lt;br&gt;enterInput(inputData* inputBuffer)" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="50" y="150" width="244" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="YR47ztt-985eAeslMe9S-8" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="YR47ztt-985eAeslMe9S-4" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="172.00000000000023" y="490.0000000000002" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="YR47ztt-985eAeslMe9S-4" value="Running &lt;br&gt;EBP Algorithm&lt;br&gt;&lt;br&gt;EBPCalc(inputData* inputBuffer, int order)" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="38" y="400" width="268" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="YR47ztt-985eAeslMe9S-17" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="YR47ztt-985eAeslMe9S-15" target="YR47ztt-985eAeslMe9S-4" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="YR47ztt-985eAeslMe9S-15" value="Initialize parameters&lt;br&gt;(input data, weight, target, etc)&lt;br&gt;&lt;br&gt;initParam(inputData* inputBuffer)" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="62" y="290" width="220" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="YR47ztt-985eAeslMe9S-23" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="YR47ztt-985eAeslMe9S-21" target="YR47ztt-985eAeslMe9S-22" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="YR47ztt-985eAeslMe9S-21" value="&lt;div&gt;Output Data as txt&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;writeData(inputData* inputBuffer)&lt;/div&gt;&lt;div&gt;writeError(inputData* inputBuffer)&lt;/div&gt;&lt;div&gt;makeGrid(gridData* gridBuffer)&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="23" y="490" width="298" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="YR47ztt-985eAeslMe9S-27" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="YR47ztt-985eAeslMe9S-22" target="YR47ztt-985eAeslMe9S-26" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="YR47ztt-985eAeslMe9S-29" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="YR47ztt-985eAeslMe9S-22" target="YR47ztt-985eAeslMe9S-24" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="YR47ztt-985eAeslMe9S-22" value="Error exist" style="rhombus;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="544" y="160" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="YR47ztt-985eAeslMe9S-33" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="YR47ztt-985eAeslMe9S-24" target="YR47ztt-985eAeslMe9S-32" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="YR47ztt-985eAeslMe9S-24" value="Enter any input &lt;br&gt;&amp;amp;&lt;br&gt;Inspect the result" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="524" y="270" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="YR47ztt-985eAeslMe9S-31" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="YR47ztt-985eAeslMe9S-26" target="YR47ztt-985eAeslMe9S-24" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="680" y="300" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="720" y="300" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="YR47ztt-985eAeslMe9S-26" value="Print Grid&lt;br&gt;that has error" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="660" y="170" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="YR47ztt-985eAeslMe9S-28" value="True" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="620" y="180" width="40" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="YR47ztt-985eAeslMe9S-30" value="False" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="590" y="240" width="40" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="jJ822f4yQd2W2Rck9KTv-3" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="YR47ztt-985eAeslMe9S-32" target="jJ822f4yQd2W2Rck9KTv-1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="YR47ztt-985eAeslMe9S-32" value="Check graphic data&lt;br&gt;&lt;br&gt;Python program" style="whiteSpace=wrap;html=1;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="524" y="370" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="jJ822f4yQd2W2Rck9KTv-1" value="End" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="524" y="470" width="120" height="80" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
