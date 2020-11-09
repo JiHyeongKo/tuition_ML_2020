@@ -47,7 +47,7 @@ plt.ylabel('X2')
 
 for k in range(0, MAX_COUNT):
     if(grid_array[k] == 1):       
-        plt.scatter(x1_array[k], x2_array[k])
+        plt.scatter(x1_array[k], x2_array[k], color='0.75', edgecolor="b")
 
 plt.show()
 

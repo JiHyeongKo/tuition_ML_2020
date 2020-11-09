@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import sys
-MAX_COUNT = 10000
+MAX_COUNT = 100
     
 File = open('write_data.txt', 'r', encoding = 'utf-8')
 data = File.readline()
@@ -34,15 +34,14 @@ for i in range(1, MAX_COUNT, 1):
         x1_array[i]=x1_array[i-1]
     if ( x2_array[i] == '') or (x2_array[i] == '\n'):
         x2_array[i]=x2_array[i-1]
-    if ( t[i] == '') or (t[i] == '\n') or (t[i] == '\n'):
+    if ( t[i] == '') or (t[i] == '\n'):
         t[i]=t[i-1]
-    if ( y[i] == '') or (y[i] == '\n'):
-        y[i]=y[i-1]
 
 for i in range(0, MAX_COUNT, 1):
     x1_array[i] = float(x1_array[i])
     x2_array[i] = float(x2_array[i])
     t[i] = float(t[i])
+
 
 plt.axis([-5, 5, -5 ,5])
 plt.grid(b=True, which='both', axis='both')
@@ -50,8 +49,12 @@ plt.xlabel('x1')
 plt.ylabel('x2')
 
 for i in range(0, MAX_COUNT, 1):
-    if(t[i] == 1):
-        plt.scatter(x1_array[i], x2_array[i])
+	if(t[i] == 1):
+		plt.scatter(x1_array[i], x2_array[i], color='0.75', edgecolor="b")
+	else:
+		plt.scatter(x1_array[i], x2_array[i], color='1', edgecolor="r")
+		 
+       
 
 plt.show()
 
