@@ -1,8 +1,13 @@
 #include "main.h"
 
-int makeGrid(gridData* gridBuffer)
+int makeGrid2D(gridData* gridBuffer)	// use only in 2 dimesion
 {
 	FILE* pFile = NULL;
+	char fileName[128] = ".\\python\\grid_test";
+	char time[10];
+	sprintf(time, "%d", inputBuffer.time);
+	strcat(fileName, time);
+	strcat(fileName, ".txt");
 	double grid;
 	double totalOutputError = 0;
 
@@ -34,7 +39,7 @@ int makeGrid(gridData* gridBuffer)
 
 			if (totalOutputError == 0)
 			{
-				if (gridTriangle(gridBuffer, k, i, X1_INTERCEPT, X2_INTERCEPT, HORIZON_INTERCEPT))
+				if (gridBoundary(gridBuffer, k, i, X1_INTERCEPT, X2_INTERCEPT, HORIZON_INTERCEPT))
 					gridBuffer->grid[NUMBER_OF_GRID_DATA * k + i] = 1;
 
 				else
@@ -43,12 +48,12 @@ int makeGrid(gridData* gridBuffer)
 
 			else
 			{
-				gridBuffer->grid[NUMBER_OF_GRID_DATA * k + i] = -1;
+				gridBuffer->grid[NUMBER_OF_GRID_DATA * k + i] = 0;
 				printf("Problem: %lf %lf\n", inputBuffer.x[0][0], inputBuffer.x[1][0]);
 			}
 		}
 
-	fopen_s(&pFile, ".\\python\\grid_test.txt", "wt");
+	fopen_s(&pFile, fileName, "wt");
 
 	if (pFile)
 	{

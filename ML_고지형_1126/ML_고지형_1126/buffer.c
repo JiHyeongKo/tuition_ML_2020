@@ -53,6 +53,8 @@ int enterInput(inputData* inputBuffer)
 		break;	// escape for loop, break immediately.
 	}
 
+	inputBuffer->time++;
+
 	return 0;
 }
 
@@ -76,7 +78,7 @@ int initParam(inputData* inputBuffer)
 		for (i = 0; i < NUMBER_OF_INPUT; i++)
 			inputBuffer->x[i][j] = (((double)(rand() % 60) - 30.0) / 10.0);	// -3.0 ~ 3.0까지 값
 		
-			inputBuffer->target[j] = makeTriangle(inputBuffer, j, X1_INTERCEPT, X2_INTERCEPT, HORIZON_INTERCEPT);	// intercept는 양수이면서 5보다 작은 값으로..
+			inputBuffer->target[j] = makeBoundary(inputBuffer, j, X1_INTERCEPT, X2_INTERCEPT, HORIZON_INTERCEPT) == 1? TARGET_HIGH : TARGET_LOW;	// intercept는 양수이면서 5보다 작은 값으로..
 			inputBuffer->biasWeight[j] = ((double)rand() / 32767.0) * 2 - 1;	// -1 ~ 1까지 값
 				// biasWeight, target are allocated twice. but we use later one. just for reducing code lines.
 		}
@@ -84,35 +86,36 @@ int initParam(inputData* inputBuffer)
 	return 0;
 }
 
-int makeTriangle(inputData* inputBuffer, int order, int intercept1, int intercept2, int intercept3)	// for random data
+int formula(double x1, double x2)	// enter the formula
 {
-	if (((inputBuffer->x[1][order] - inputBuffer->x[0][order] - intercept1) < 0) &&
-		((inputBuffer->x[1][order] + inputBuffer->x[0][order] - intercept2) < 0) &&
-		((inputBuffer->x[1][order] - intercept3) > 0))	// 특정한 삼각형 안에 있으면...
+	//if (pow((pow(x1, 2) + pow(x2, 2) - 1), 3) - (pow(x1, 2) * pow(x2, 3)) < 0)
+	if ( (pow((pow(x1, 2) + pow(x2, 2) - 1), 3) - (pow(x1, 2) * pow(x2, 3)) < 0))	// shape heart column
 		return 1;	// target = 1
 
-	else	// 특정한 삼각형 밖에 있으면...
-		return 0;	// target = 0
-}/////////////////////// 얘가 3D여서 그렇구나...!
-
-int inspectTriangle(double* inputBuffer, int intercept1, int intercept2, int intercept3)	// for inspection
-{
-	if (((inputBuffer[1] - inputBuffer[0] - intercept1) < 0) &&
-		((inputBuffer[1] + inputBuffer[0] - intercept2) < 0) &&
-		((inputBuffer[1] - intercept3) > 0))	// 특정한 삼각형 안에 있으면...
-		return 1;	// target = 1
-
-	else	// 특정한 삼각형 밖에 있으면...
+	else
 		return 0;	// target = 0
 }
 
-int gridTriangle(gridData* gridBuffer, int grid_x1, int grid_x2, int intercept1, int intercept2, int intercept3)	// for grid inspection
+int makeBoundary(inputData* inputBuffer, int order, int intercept1, int intercept2, int intercept3)	// for random target
 {
-	if (((gridBuffer->x[1][grid_x2] - gridBuffer->x[0][grid_x1] - intercept1) < 0) &&
-		((gridBuffer->x[1][grid_x2] + gridBuffer->x[0][grid_x1] - intercept2) < 0) &&
-		((gridBuffer->x[1][grid_x2] - intercept3) > 0))	// 특정한 삼각형 안에 있으면...
-		return 1;	// target = 1
+	double x1 = inputBuffer->x[0][order];
+	double x2 = inputBuffer->x[1][order];
 
-	else	// 특정한 삼각형 밖에 있으면...
-		return 0;	// target = 0
+	return formula(x1, x2);
+}
+
+int inspectBoundary(double* inputBuffer, int intercept1, int intercept2, int intercept3)	// for inspection
+{
+	double x1 = inputBuffer[0];
+	double x2 = inputBuffer[1];
+
+	return formula(x1, x2);
+}
+
+int gridBoundary(gridData* gridBuffer, int grid_x1, int grid_x2, int intercept1, int intercept2, int intercept3)	// for grid inspection
+{
+	double x1 = gridBuffer->x[0][grid_x1];
+	double x2 = gridBuffer->x[1][grid_x2];
+
+	return formula(x1, x2);
 }

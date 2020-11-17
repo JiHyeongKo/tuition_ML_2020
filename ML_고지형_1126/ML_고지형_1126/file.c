@@ -3,7 +3,12 @@
 int writeData(inputData* inputBuffer)	// 입출력 데이터 저장
 {
 	FILE* pFile = NULL;
-	fopen_s(&pFile, ".\\python\\write_data.txt", "wt");
+	char fileName[128] = ".\\python\\write_data";
+	char time[10];
+	sprintf(time, "%d", inputBuffer->time);
+	strcat(fileName, time);
+	strcat(fileName, ".txt");
+	fopen_s(&pFile, fileName, "wt");
 
 	if (pFile)
 	{
@@ -44,8 +49,12 @@ int writeError(inputData* inputBuffer)	// Epoch마다 Error 저장
 {
 	int epoch = MAX_EPOCH;
 	FILE* pFile = NULL;
-
-	fopen_s(&pFile, ".\\python\\write_error.txt", "wt");
+	char fileName[128] = ".\\python\\write_error";
+	char time[10];
+	sprintf(time, "%d", inputBuffer->time);
+	strcat(fileName, time);
+	strcat(fileName, ".txt");
+	fopen_s(&pFile, fileName, "wt");
 
 	if (pFile)
 	{
@@ -79,3 +88,57 @@ int writeError(inputData* inputBuffer)	// Epoch마다 Error 저장
 	return -1;	// failed
 }
 
+int initEvaluation(inputData* inputBuffer)
+{
+	FILE* pFile = NULL;
+	char fileName[128] = ".\\python\\write_evaluate";
+	char time[10];
+	sprintf(time, "%d", inputBuffer->time);
+	strcat(fileName, time);
+	strcat(fileName, ".txt");
+	fopen_s(&pFile, fileName, "wt");
+
+	if (pFile)
+	{
+		fprintf_s(pFile, "Epoch\t");
+
+		for (int i = 0; i < NUMBER_OF_OUTPUT; i++)
+			fprintf_s(pFile, "ERROR%d\t", i + 1);
+
+		fprintf_s(pFile, "\n");
+		fclose(pFile);
+
+		return 0;	// success
+	}
+
+	printf("File open error!\n");
+	return -1;	// failed
+}
+
+int writeEvaluation(inputData* inputBuffer, int epoch)
+{
+	FILE* pFile = NULL;
+	char fileName[128] = ".\\python\\write_evaluate";
+	char time[10];
+	sprintf(time, "%d", inputBuffer->time);
+	strcat(fileName, time);
+	strcat(fileName, ".txt");
+	fopen_s(&pFile, fileName, "at");
+
+
+	if (pFile)
+	{
+		fprintf_s(pFile, "%d\t", epoch);
+
+		for (int i = 0; i < NUMBER_OF_OUTPUT; i++)
+			fprintf_s(pFile, "%lf\t", inputBuffer->errorSum[i][epoch]);
+
+		fprintf_s(pFile, "\n");
+		fclose(pFile);
+
+		return 0;	// success
+	}
+
+	printf("File open error!\n");
+	return -1;	// failed
+}
