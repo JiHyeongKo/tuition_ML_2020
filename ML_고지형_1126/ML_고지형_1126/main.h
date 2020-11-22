@@ -9,14 +9,15 @@
 #define _USE_MATH_DEFINES 
 #include <math.h>
 
-#define MAX_NUERON 15
-#define MIN_NUERON 3
-#define MAX_LAYER 5
+#define MAX_NUERON 30
+#define MIN_NUERON 1
+#define MAX_LAYER 15
 #define MIN_LAYER 1
 
 #define MAX_EPOCH 10000
 #define ALLOW_ERROR 0.01
 #define ALLOW_TOTAL_ERROR NUMBER_OF_DATA * ALLOW_ERROR
+#define ALLOW_ORDER		2
 #define LEARNING_GAIN 0.5	// LEARNING_GAIN(ETHA) : (range: 0~1)
 
 #define THRESHOLD 0.5
@@ -28,8 +29,8 @@
 #define HORIZON_INTERCEPT 0	// positive: over X1 line. negative: below X1 line.
 
 #define NUMBER_OF_BIAS 1
-#define NUMBER_OF_INPUT 2
-#define NUMBER_OF_OUTPUT 1
+#define NUMBER_OF_INPUT 5
+#define NUMBER_OF_OUTPUT 2
 #define NUMBER_OF_LAYER 2
 #define NUMBER_OF_DATA 1000
 #define NUMBER_OF_GRID_DATA 100

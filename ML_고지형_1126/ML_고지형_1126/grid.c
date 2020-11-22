@@ -31,7 +31,7 @@ int makeGrid2D(gridData* gridBuffer)	// use only in 2 dimesion
 			inputBuffer.x[1][0] = gridBuffer->x[1][i];
 			EBPCalc(&inputBuffer, 0);
 
-			for (int numOutput = 0; numOutput < NUMBER_OF_OUTPUT; numOutput++)	// 각각의 에러의 합의 threshold인지 전체 에러 합의 threshold인지 체크 필요
+			for (int numOutput = 0; numOutput < NUMBER_OF_OUTPUT; numOutput++)
 			{
 				inputBuffer.error[numOutput][i] = (inputBuffer.error[numOutput][i] > THRESHOLD);
 				totalOutputError = totalOutputError + inputBuffer.error[numOutput][i];
