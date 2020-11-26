@@ -27,13 +27,13 @@ int EBPCalc(inputData* inputBuffer, int order)
 	memset(&delta, 0, sizeof(delta));
 	memset(&deltaWeight, 0, sizeof(deltaWeight));
 
-	for (numOutput = 0; numOutput < NUMBER_OF_OUTPUT; numOutput++)
+	for (numOutput = 0; numOutput < inputBuffer->outputNum; numOutput++)
 	{
 		for (i = 0; i < (inputBuffer->layer); i++)
 		{
 			for (j = 0; j < (inputBuffer->nueron[i]); j++)
 			{
-				for (k = 0; k < NUMBER_OF_INPUT; k++)
+				for (k = 0; k < inputBuffer->inputNum; k++)
 				{
 					sumBuffer[numOutput][i][j] = sumBuffer[numOutput][i][j] + 
 						(inputBuffer->x[k][order] * inputBuffer->weight[numOutput][i][j][k]);	// weight*input
@@ -95,55 +95,47 @@ int EBPCalc(inputData* inputBuffer, int order)
 	return 0;
 }
 
-/*
-int inspectResult(double* x_inspect)
+int EBPInspect(inputData* inputBuffer, int order)
 {
-	printf("Enter the any input X1, X2 ( -5 < X < 5 )\n");
-	printf("If they are in the boundary that you generated, the EBP function will inspect it.\n");
+	int numOutput = 0;
+	int i = 0;
+	int j = 0;
+	int k = 0;
+	int numLayer_1 = inputBuffer->layer - 1;	// number of layer - 1 : for array.
+	int try = MAX_EPOCH;
 
-	double totalOutputError = 0;
+	double biasDeltaWeight = 0;
+	// 입력의 갯수 제외한, (히든 레이어의 뉴런 갯수 + 출력단) 만큼 필요
 
-	while (1)
+	memset(&sum, 0, sizeof(sum));
+	memset(&sumBuffer, 0, sizeof(sumBuffer));
+	memset(&delta, 0, sizeof(delta));
+	memset(&deltaWeight, 0, sizeof(deltaWeight));
+
+	for (numOutput = 0; numOutput < NUMBER_OF_OUTPUT; numOutput++)
 	{
-		printf("X1 X2: ");
-		scanf_s("%lf", &x_inspect[0]);
-		scanf_s(" %lf", &x_inspect[1]);
-
-		if (inspectBoundary(x_inspect, X1_INTERCEPT, X2_INTERCEPT, HORIZON_INTERCEPT))
+		for (i = 0; i < (inputBuffer->layer); i++)
 		{
-			printf("You enter %lf, %lf there are inside.\n", x_inspect[0], x_inspect[1]);
-			break;
+			for (j = 0; j < (inputBuffer->nueron[i]); j++)
+			{
+				for (k = 0; k < inputBuffer->inputNum; k++)
+				{
+					sumBuffer[numOutput][i][j] = sumBuffer[numOutput][i][j] +
+						(inputBuffer->x[k][order] * inputBuffer->weight[numOutput][i][j][k]);	// weight*input
+				}
+
+				sumBuffer[numOutput][i][j] = sumBuffer[numOutput][i][j] + (inputBuffer->bias * inputBuffer->biasWeight[order]);	// weight*input + bias
+				inputBuffer->output[numOutput][i][j] = sigmoid(sumBuffer[numOutput][i][j]);	// hidden layer output
+			}
+
+			for (j = 0; j < (inputBuffer->nueron[i]); j++)
+				sum[numOutput] = sum[numOutput] + (inputBuffer->output[numOutput][i][j] * inputBuffer->weight[numOutput][i][inputBuffer->nueron[i] + numOutput][j]);	// 전체 weight*input
+			sum[numOutput] = sum[numOutput] + (inputBuffer->bias * inputBuffer->biasWeight[order]);	// 전체 weight*input + bias
 		}
 
-		else
-		{
-			printf("You enter %lf %lf there are outside.\n", x_inspect[0], x_inspect[1]);
-			break;
-		}
+		inputBuffer->output[numOutput][numLayer_1][inputBuffer->nueron[numLayer_1] + numOutput] = sigmoid(sum[numOutput]);	// last output(output layer output)
+		inputBuffer->y[numOutput][order] = (inputBuffer->output[numOutput][numLayer_1][inputBuffer->nueron[numLayer_1] + numOutput]);	// y = last output
+		inputBuffer->error[numOutput][order] = fabs(inputBuffer->y[numOutput][order]);
 	}
-
-	inputBuffer.x[0][0] = x_inspect[0];
-	inputBuffer.x[1][0] = x_inspect[1];
-	EBPCalc(&inputBuffer, 0);
-
-	
-	for (int numOutput = 0; numOutput < inputBuffer.outputNum; numOutput++)	// 각각의 에러의 합의 threshold인지 전체 에러 합의 threshold인지 체크 필요
-	{
-		printf("%d Error insepection: %lf\n", numOutput+1, inputBuffer.error[numOutput][0]);
-		inputBuffer.error[numOutput][0] = (inputBuffer.error[numOutput][0] > THRESHOLD);
-		totalOutputError = totalOutputError + inputBuffer.error[numOutput][0];
-	}
-
-	if (totalOutputError > 0)	// error가 많이 있으면
-	{
-		printf("There is fatal error\n");
-		return -1;
-	}
-
-	else	// error가 거의 없으면
-	{
-		printf("Well Done!\n");
-		return 0;
-	}
+	return 0;
 }
-*/

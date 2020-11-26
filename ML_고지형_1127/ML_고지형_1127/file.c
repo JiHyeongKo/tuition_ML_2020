@@ -77,12 +77,19 @@ int writeError(inputData* inputBuffer)	// Epoch마다 Error 저장
 {
 	int epoch = MAX_EPOCH;
 	FILE* pFile = NULL;
+	FILE* qFile = NULL;
+
 	char fileName[128] = ".\\python\\write_error";
+	char fileName_q[128] = ".\\python\\write_error_all";
 	char order[10];
+	sprintf(order, "%d", inputBuffer->time);
 	sprintf(order, "%d", inputBuffer->time);
 	strcat(fileName, order);
 	strcat(fileName, ".txt");
+	strcat(fileName_q, order);
+	strcat(fileName_q, ".txt");
 	fopen_s(&pFile, fileName, "wt");
+	fopen_s(&qFile, fileName_q, "wt");
 	double errorSum = 0;
 
 	if (pFile)
@@ -95,34 +102,93 @@ int writeError(inputData* inputBuffer)	// Epoch마다 Error 저장
 
 		for (int i = 0; i < inputBuffer->outputNum; i++)
 			fprintf_s(pFile, "ERROR%d\t", i+1);
+
+		fprintf_s(pFile, "TIME\t");
 		
 		fprintf_s(pFile, "\n");
 
 
 		for (int j = 0; j < MAX_EPOCH; j++)
 		{
-			errorSum = 0;
-
-			fprintf_s(pFile, "%08d\t", MAX_EPOCH - epoch);
-			
-			if (inputBuffer->outputNum > 1)
+			if (j % INSPECT_TIME == 0)
 			{
+				errorSum = 0;
+
+				fprintf_s(pFile, "%08d\t", MAX_EPOCH - epoch);
+
+				if (inputBuffer->outputNum > 1)
+				{
+					for (int i = 0; i < inputBuffer->outputNum; i++)
+						errorSum = errorSum + inputBuffer->errorSum[i][j];
+
+					fprintf_s(pFile, "%lf\t", errorSum);
+				}
+
 				for (int i = 0; i < inputBuffer->outputNum; i++)
-					errorSum = errorSum + inputBuffer->errorSum[i][j];
+					fprintf_s(pFile, "%lf\t", inputBuffer->errorSum[i][j]);
 
-				fprintf_s(pFile, "%lf\t", errorSum);
+				time(&tnow);
+				t = (struct tm*)localtime(&tnow);
+
+				fprintf_s(pFile, "%02d:", t->tm_mday);
+				fprintf_s(pFile, "%02d:", t->tm_hour);
+				fprintf_s(pFile, "%02d:", t->tm_min);
+				fprintf_s(pFile, "%02d\n", t->tm_sec);
 			}
-
-			for (int i = 0; i < inputBuffer->outputNum; i++)
-				fprintf_s(pFile, "%lf\t", inputBuffer->errorSum[i][j]);
-
-			fprintf_s(pFile, "\n");
-
 
 			epoch--;
 		}
 
-		fclose(pFile);
+		fclose(pFile);	// success
+	}
+
+	epoch = MAX_EPOCH;
+
+	if (qFile)
+	{
+		fprintf_s(qFile, "Epoch\t");
+
+		if (inputBuffer->outputNum > 1)
+			fprintf_s(qFile, "ERRORSUM\t");
+
+
+		for (int i = 0; i < inputBuffer->outputNum; i++)
+			fprintf_s(qFile, "ERROR%d\t", i + 1);
+
+		fprintf_s(qFile, "TIME\t");
+
+		fprintf_s(qFile, "\n");
+
+
+		for (int j = 0; j < MAX_EPOCH; j++)
+		{
+				errorSum = 0;
+
+				fprintf_s(qFile, "%08d\t", MAX_EPOCH - epoch);
+
+				if (inputBuffer->outputNum > 1)
+				{
+					for (int i = 0; i < inputBuffer->outputNum; i++)
+						errorSum = errorSum + inputBuffer->errorSum[i][j];
+
+					fprintf_s(qFile, "%lf\t", errorSum);
+				}
+
+				for (int i = 0; i < inputBuffer->outputNum; i++)
+					fprintf_s(qFile, "%lf\t", inputBuffer->errorSum[i][j]);
+
+				time(&tnow);
+				t = (struct tm*)localtime(&tnow);
+
+				fprintf_s(qFile, "%02d:", t->tm_mday);
+				fprintf_s(qFile, "%02d:", t->tm_hour);
+				fprintf_s(qFile, "%02d:", t->tm_min);
+				fprintf_s(qFile, "%02d\n", t->tm_sec);
+
+			epoch--;
+		}
+
+		fclose(qFile);
 		return 0;	// success
 	}
 
@@ -134,7 +200,7 @@ int writeError(inputData* inputBuffer)	// Epoch마다 Error 저장
 int initEvaluation(inputData* inputBuffer)	// evaluation data 저장하기 위한 파일을 만드는 함수
 {
 	FILE* pFile = NULL;
-	char fileName[128] = ".\\python\\write_evaluate";
+	char fileName[128] = ".\\python\\write_output";
 	char order[10];;
 	sprintf(order, "%d", inputBuffer->time);
 	strcat(fileName, order);
@@ -162,7 +228,7 @@ int initEvaluation(inputData* inputBuffer)	// evaluation data 저장하기 위한 파일
 int writeEvaluation(inputData* inputBuffer, int epoch)
 {
 	FILE* pFile = NULL;
-	char fileName[128] = ".\\python\\write_evaluate";
+	char fileName[128] = ".\\python\\write_output";
 	char order[10];
 	sprintf(order, "%d", inputBuffer->time);
 	strcat(fileName, order);
@@ -182,12 +248,10 @@ int writeEvaluation(inputData* inputBuffer, int epoch)
 		time(&tnow);
 		t = (struct tm*) localtime(&tnow);
 
-		fprintf_s(pFile, "%04d/", t->tm_year + 1900);	// 입력 시간 나타내는 부분
-		fprintf_s(pFile, "%02d/", t->tm_mon);
-		fprintf_s(pFile, "%02d ", t->tm_mday);
+		fprintf_s(pFile, "%02d:", t->tm_mday);
 		fprintf_s(pFile, "%02d:", t->tm_hour);
 		fprintf_s(pFile, "%02d:", t->tm_min);
-		fprintf_s(pFile, "%02d\r\n", t->tm_sec);
+		fprintf_s(pFile, "%02d\n", t->tm_sec);
 
 		fclose(pFile);
 		return 0;	// success

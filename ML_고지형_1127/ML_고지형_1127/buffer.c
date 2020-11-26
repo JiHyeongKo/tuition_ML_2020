@@ -123,11 +123,34 @@ int inspectParam(inputData* inputBuffer, inputData* inspectBuffer)
 	memcpy(inspectBuffer, inputBuffer, sizeof(inputData));
 	inspectBuffer->inputNum = NUMBER_OF_INPUT;
 	inspectBuffer->outputNum = NUMBER_OF_OUTPUT;
+	memset(inspectBuffer->x, 0, sizeof(inspectBuffer->x));
+	memset(inspectBuffer->target, 0, sizeof(inspectBuffer->target));
+	memset(inspectBuffer->output, 0, sizeof(inspectBuffer->output));
 
-	for (j = 0; j < NUMBER_OF_DATA; j++)
-		for (i = inspectBuffer->inputNum; i < NUMBER_OF_INPUT; i++)
-			inspectBuffer->x[i][j] = 0;
+	return 0;
+}
 
+int inspectParamByFile(inputData* inputBuffer, char* fileName)
+{
+	FILE* pFile = NULL;
+	fopen_s(&pFile, fileName, "rt");
+
+	if (pFile)
+	{
+		for (int j = 0; j < NUMBER_OF_TEST_DATA; j++)
+		{
+			int i = 8;
+			fscanf_s(pFile, "%lf %lf %lf %lf %lf %lf %lf %lf %lf",
+				&inputBuffer->x[i--][j], &inputBuffer->x[i--][j], &inputBuffer->x[i--][j],
+				&inputBuffer->x[i--][j], &inputBuffer->x[i--][j], &inputBuffer->x[i--][j],
+				&inputBuffer->x[i--][j], &inputBuffer->x[i--][j], &inputBuffer->x[i--][j]);
+			// 거꾸로 읽는다;
+		}
+
+		fclose(pFile);
+	}
+	else
+		printf("error\n");
 	return 0;
 }
 
@@ -164,15 +187,7 @@ int makeBoundary(inputData* inputBuffer, int order, int intercept1, int intercep
 
 	return formula(x1, x2);
 }
-/*
-int inspectBoundary(double* inputBuffer, int intercept1, int intercept2, int intercept3)	// for inspection
-{
-	double x1 = inputBuffer[0];
-	double x2 = inputBuffer[1];
 
-	return formula(x1, x2);
-}
-*/
 int gridBoundary(gridData* gridBuffer, int grid_x1, int grid_x2, int intercept1, int intercept2, int intercept3)	// for grid inspection
 {
 	double x1 = gridBuffer->x[0][grid_x1];

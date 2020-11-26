@@ -29,9 +29,10 @@
 #define HORIZON_INTERCEPT 0	// positive: over X1 line. negative: below X1 line.
 
 #define NUMBER_OF_BIAS 1
-#define NUMBER_OF_INPUT 15
-#define NUMBER_OF_OUTPUT 3
-#define NUMBER_OF_DATA 50
+#define NUMBER_OF_INPUT 9
+#define NUMBER_OF_OUTPUT 1
+#define NUMBER_OF_DATA 1200
+#define NUMBER_OF_TEST_DATA	200
 #define NUMBER_OF_GRID_DATA 100
 
 #define INSPECT_TIME	10	// inspect every 100 epoch
@@ -75,15 +76,15 @@ int enterInput(inputData* inputBuffer);
 int loadData(inputData* inputBuffer, char* fileName);
 int initParam(inputData* inputBuffer);
 int inspectParam(inputData* inputBuffer, inputData* inspectBuffer);
+int inspectParamByFile(inputData* inputBuffer, char* fileName);
 int copyWeight(inputData* inputBuffer, weight_t* weightBuffer);
 int pasteWeight(inputData* inspectBuffer, weight_t* weightBuffer);
 
 int makeBoundary(inputData* inputBuffer, int order, int intercept1, int intercept2, int intercept3); 
-//int inspectBoundary(double* inputBuffer, int intercept1, int intercept2, int intercept3);
 int gridBoundary(gridData* gridBuffer, int grid_x1, int grid_x2, int intercept1, int intercept2, int intercept3);
 
 int EBPCalc(inputData* inputBuffer, int order);
-//int inspectResult(double* x_inspect);
+int EBPInspect(inputData* inputBuffer, int order);
 
 int writeData(inputData* inputBuffer);
 int writeError(inputData* inputBuffer);

@@ -16,11 +16,7 @@ int main(void)
 		enterInput(&inputBuffer);
 		initParam(&inputBuffer);
 
-		if(NUMBER_OF_DATA == 50) // only use at 50 data input for test.
-		loadData(&inputBuffer, "Training_data.txt");	
-
-		inspectParam(&inputBuffer, &inspectBuffer);
-		initEvaluation(&inspectBuffer);
+		//loadData(&inputBuffer, "Training_data(1126).txt");	// 학습데이터를 외부에서 불러옴.
 
 		for (int i = 0; i < MAX_EPOCH; i++)
 		{
@@ -32,7 +28,7 @@ int main(void)
 					inputBuffer.errorSum[numOutput][i] = inputBuffer.errorSum[numOutput][i] + (inputBuffer.error[numOutput][j]);
 			}
 
-			if (i % INSPECT_TIME == 0)	// every 100 times
+			if (i % INSPECT_TIME == 0)	// every 10 times
 				{
 					copyWeight(&inputBuffer, &weightBuffer[inspectTime++]);
 				}
@@ -40,21 +36,23 @@ int main(void)
 		
 		writeData(&inputBuffer);
 		writeError(&inputBuffer);
-		
-		// convergence inspection
-		for (int i = 0; i < inspectTime; i++)
+
+		// inspection //
+
+		inspectParam(&inputBuffer, &inspectBuffer);
+		inspectParamByFile(&inspectBuffer, "test_data(1126).txt");	// 테스트 데이터를 외부에서 불러옴.
+		pasteWeight(&inspectBuffer, &weightBuffer[inspectTime-1]);	// 보통은 나중것이 제일 작으니...
+
+		for (int j = 0; j < NUMBER_OF_TEST_DATA; j++)
 		{
-			pasteWeight(&inspectBuffer, &weightBuffer[i]);
-			for (int j = 0; j < NUMBER_OF_DATA; j++)
-			{
-				EBPCalc(&inspectBuffer, j);
+			EBPInspect(&inspectBuffer, j);
 
-				for (int numOutput = 0; numOutput < NUMBER_OF_OUTPUT; numOutput++)
-					inspectBuffer.errorSum[numOutput][i* INSPECT_TIME] = inspectBuffer.errorSum[numOutput][i* INSPECT_TIME] + (inspectBuffer.error[numOutput][j]);
-			}
-
-			writeEvaluation(&inspectBuffer, i * INSPECT_TIME);
+			for (int numOutput = 0; numOutput < NUMBER_OF_OUTPUT; numOutput++)
+				inspectBuffer.errorSum[numOutput][(inspectTime - 1) *INSPECT_TIME] = inspectBuffer.errorSum[numOutput][(inspectTime - 1) * INSPECT_TIME] + (inspectBuffer.error[numOutput][j]);
 		}
+
+		initEvaluation(&inspectBuffer);
+		writeEvaluation(&inspectBuffer, (inspectTime - 1) * INSPECT_TIME);
 
 		if(inputBuffer.inputNum ==2)	// 2 layers -> get grid test
 			makeGrid2D(&gridBuffer);
